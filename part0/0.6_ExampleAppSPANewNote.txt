@@ -1,0 +1,15 @@
+title ExampleAppSPANewNote
+
+note over browser:
+browser executes event hander
+that stores new note locally
+and displays updated notes
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over server:
+server stores new note
+end note
+
+server->browser: Acknowledge new note stored
