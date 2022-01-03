@@ -31,29 +31,27 @@ const Total = (props) => {
 
 const App = () => {
   const course = 'Front half of webapp development'
-  const part1 = 'React Foundations'
-  const exercises1 = 10
-  const part2 = 'Using React Props'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
-
-  const parts = {
-    part1: {
-      name: part1,
-      exercises: exercises1
-    },
-    part2: {
-      name: part2,
-      exercises: exercises2
-    },
-    part3: {
-      name: part3,
-      exercises: exercises3
-    }
+  const part1 = {
+    name: 'React Foundations',
+    exercises: 10
+  }
+  const part2 = {
+    name: 'Using React Props',
+    exercises: 7
+  }
+  const part3 = {
+    name: 'State of a component',
+    exercises: 14
   }
 
-  const exercises = exercises1 + exercises2 + exercises3
+  const parts = {
+    part1: part1,
+    part2: part2,
+    part3: part3
+  }
+
+
+  const exercises = part1.exercises + part2.exercises + part3.exercises
 
   return (
     <div>
