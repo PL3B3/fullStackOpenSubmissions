@@ -61,7 +61,7 @@ const Feedback = ({ onClickGenerator, feedback }) => {
   return (
     <div>
       {Object.keys(feedback).map(
-        (item, index) => <Button key={item} text={item} onClick={onClickGenerator(item)} />
+        (item) => <Button key={item} text={item} onClick={onClickGenerator(item)} />
       )}
     </div>
   )
