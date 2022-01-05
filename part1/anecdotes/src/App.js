@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 
 const randIndex = (length) => Math.floor(Math.random() * length)
 
-const Anecdote = ({ anecdote }) => {
+const Anecdote = ({ anecdote, votes }) => {
   const author = anecdote.author || 'Unknown'
   return (
     <div>
       <q>{anecdote.quote}</q>
       - <strong>{author}</strong>
+      <p>Has {votes} votes</p>
     </div>
   )
 }
@@ -73,14 +74,29 @@ const App = () => {
   ]
 
   const [ selected, setSelected ] = useState(0)
-  
+  const [ votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+  const [ mostVoted, setMostVoted ] = useState(0)
 
   const selectRandom = () => setSelected(randIndex(anecdotes.length))
+  const addVote = () => {
+    const votesCopy = [...votes]
+
+    votesCopy[selected] += 1
+    if (votesCopy[selected] >= votesCopy[mostVoted]) {
+      setMostVoted(selected)
+    }
+
+    setVotes(votesCopy)
+  }
 
   return (
     <div>
-      <Anecdote anecdote={anecdotes[selected]} />
+      <h1>One single crumb of wisdom</h1>
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
+      <Button onClick={addVote} text='vote for me!' />
       <Button onClick={selectRandom} text='random quote' />
+      <h1>The supreme crumblet of wisdom</h1>
+      <Anecdote anecdote={anecdotes[mostVoted]} votes={votes[mostVoted]} />
     </div>
   )
 }
