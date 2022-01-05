@@ -2,7 +2,7 @@ const creature = {
     name: 'The chumibulet',
     age: 3,
     education: 'PHD MD RN BS CS',
-    health: 100,
+    health: 1000,
     description: 'Miniscule mushroom creature',
     abilities: {
         primary: {
@@ -11,7 +11,7 @@ const creature = {
             cost: 5 
         },
         secondary: {
-            name: 'Squeaking',
+            name: 'Nibble',
             damage: 10,
             cost: 2
         }
@@ -19,3 +19,5 @@ const creature = {
 }
 
 console.log(creature)
+
+console.log('creature :>> ', creature);
