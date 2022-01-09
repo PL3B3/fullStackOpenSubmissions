@@ -66,23 +66,22 @@ const CountryDetails = ({ country }) => (
   </div>
 );
 
-const CountryList = ({ countries, expanded, onExpand }) => {
+const CountryList = ({ countries, expanded, onToggle }) => {
   return (
     <div>
       {countries.map(country => {
         const name = country.name.common;
-        let result
-        if (expanded[name] === true) {
-          result = <CountryDetails key={name} country={country} />;
-        } else {
-          result = (
-            <div key={name}>
-              {name}
-              <button onClick={onExpand(name)}>details</button>
-            </div>
-          );
-        }
-        return result;
+        const details = expanded[name] === true
+          ? <CountryDetails key={name} country={country} />
+          : ''
+
+        return (
+          <div key={name}>
+            {name}
+            <button onClick={onToggle(name)}>{details ? 'hide' : 'show'}</button>
+            {details}
+          </div>
+        )
       })}
     </div>
   )
@@ -92,11 +91,11 @@ const CountryList = ({ countries, expanded, onExpand }) => {
 const Countries = ({ countries }) => {
   const [expanded, setExpanded] = useState({})
 
-  const onExpand = (name) => () => {
+  const onToggle = (name) => () => {
     const newExpanded = {
       ...expanded
     };
-    newExpanded[name] = true;
+    newExpanded[name] = !newExpanded[name];
 
     setExpanded(newExpanded)
   }
@@ -108,7 +107,7 @@ const Countries = ({ countries }) => {
     result = <p>Too many to show</p>;
   }
   else if (countries.length > 1) {
-    result = <CountryList expanded={expanded} onExpand={onExpand} countries={countries} />;
+    result = <CountryList expanded={expanded} onToggle={onToggle} countries={countries} />;
   } else if (countries.length == 1) {
     result = (
       <CountryDetails country={countries[0]} />
