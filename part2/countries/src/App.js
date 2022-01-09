@@ -10,7 +10,7 @@ const Filter = ({ value, onChange }) => {
   );
 };
 
-const Country = ({ country }) => (
+const CountryDetails = ({ country }) => (
   <div>
     <h2>{country.name.common} ({country.flag})</h2>
     <p>Population: {country.population}</p>
@@ -23,7 +23,7 @@ const Country = ({ country }) => (
     </ul>
     <img 
       width="150" 
-      style={{'border-style':'solid'}}
+      style={{'borderStyle':'solid'}}
       title={`Flag of ${country.name.common}`}
       alt={`Flag of ${country.name.common}`} 
       src={country.flags.svg}
@@ -31,8 +31,42 @@ const Country = ({ country }) => (
   </div>
 );
 
+const CountryList = ({ countries, expanded, onExpand }) => {
+  return (
+    <div>
+      {countries.map(country => {
+        const name = country.name.common;
+        let result
+        if (expanded[name] === true) {
+          result = <CountryDetails key={name} country={country} />;
+        } else {
+          result = (
+            <div key={name}>
+              {name}
+              <button onClick={onExpand(name)}>details</button>
+            </div>
+          );
+        }
+        return result;
+      })}
+    </div>
+  )
+}
+
 
 const Countries = ({ countries }) => {
+  const [expanded, setExpanded] = useState({})
+
+  const onExpand = (name) => () => {
+    const newExpanded = {
+      ...expanded
+    };
+    newExpanded[name] = true;
+
+    console.log(`newExpanded`, newExpanded)
+    setExpanded(newExpanded)
+  }
+
   console.log(`countries`, countries)
 
   let result
@@ -41,17 +75,10 @@ const Countries = ({ countries }) => {
     result = <p>Too many to show</p>;
   }
   else if (countries.length > 1) {
-    result = (
-      <div>
-        {countries.map(country => {
-          const name = country.name.common;
-          return <p key={name}>{name}</p>;
-        })}
-      </div>
-    );
+    result = <CountryList expanded={expanded} onExpand={onExpand} countries={countries} />;
   } else if (countries.length == 1) {
     result = (
-      <Country country={countries[0]} />
+      <CountryDetails country={countries[0]} />
     );
   } else {
     result = (
