@@ -10,6 +10,24 @@ const Filter = ({ value, onChange }) => {
   );
 };
 
+const Weather = ({ city }) => {
+  const [weatherData, setWeatherData] = useState({})
+
+  const weatherHook = () => {
+    axios
+      .get(`api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`)
+      .then(response => setWeatherData(response.data))
+  }
+
+  useEffect(weatherHook, [])
+
+  return (
+    <div>
+      weatherData
+    </div>
+  )
+}
+
 const CountryDetails = ({ country }) => (
   <div>
     <h2>{country.name.common} ({country.flag})</h2>
@@ -28,6 +46,7 @@ const CountryDetails = ({ country }) => (
       alt={`Flag of ${country.name.common}`} 
       src={country.flags.svg}
     />
+    <Weather city={country.capital} />
   </div>
 );
 
@@ -63,11 +82,9 @@ const Countries = ({ countries }) => {
     };
     newExpanded[name] = true;
 
-    console.log(`newExpanded`, newExpanded)
     setExpanded(newExpanded)
   }
 
-  console.log(`countries`, countries)
 
   let result
   
@@ -105,6 +122,7 @@ function App() {
   };
   
   useEffect(countriesHook, []);
+
 
   const onFilterChange = (event) => {
     setFilter(event.target.value)
