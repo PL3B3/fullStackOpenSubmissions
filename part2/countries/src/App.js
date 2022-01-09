@@ -11,22 +11,38 @@ const Filter = ({ value, onChange }) => {
 };
 
 const Weather = ({ city }) => {
-  const [weatherData, setWeatherData] = useState({})
+  const [weatherData, setWeatherData] = useState(undefined);
 
   const weatherHook = () => {
     axios
-      .get(`api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`)
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
       .then(response => setWeatherData(response.data))
+      .catch(err => console.error(err))
+  };
+
+  useEffect(weatherHook, []);
+
+  let result;
+
+  if (weatherData) {
+    result = (
+      <div>
+        <h3>Weather</h3>
+        <p><strong>Temperature (C): </strong> {weatherData.main.temp}</p>
+        <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`}/>
+        <p><strong>Wind (KM/H): </strong> {weatherData.wind.speed}</p>
+      </div>
+    );
+  } else {
+    result = (
+      <div>
+        Waiting on weather data...
+      </div>
+    );
   }
 
-  useEffect(weatherHook, [])
-
-  return (
-    <div>
-      weatherData
-    </div>
-  )
-}
+  return result;
+};
 
 const CountryDetails = ({ country }) => (
   <div>
