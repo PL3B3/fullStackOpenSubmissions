@@ -2,23 +2,22 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import TextForm from './components/TextForm'
 import Contacts from './components/Contacts'
-
-const fakeContacts = [
-  { name: 'Wanzooka', number: '334-217-9895'},
-  { name: 'MHB', number: '1-800-255-4428'},
-  { name: 'Dr. Doctor, MD', number: '500-310-2311'},
-  { name: 'Saul Goodman', number: '485-912-9192'},
-  { name: 'The Associate', number: '000000'},
-  { name: 'Officer Large', number: '9-1-1'},
-  { name: 'EBUBECHUKWE', number: '0100-333-923812938492-39290-111'}
-]
+import axios from 'axios'
 
 
 const App = () => {
-  const [persons, setPersons] = useState(fakeContacts)
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNameFilter] = useState('')
+
+  const personsHook = () => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then(response => setPersons(response.data))
+  }
+
+  useEffect(personsHook, [])
 
   const addPerson = (event) => {
     event.preventDefault()
