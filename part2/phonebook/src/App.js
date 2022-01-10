@@ -4,6 +4,8 @@ import TextForm from './components/TextForm'
 import Contacts from './components/Contacts'
 import personService from './services/persons'
 
+const samePerson = (name1, name2) => name1.toLowerCase().trim() === name2.toLowerCase().trim()
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
@@ -21,10 +23,10 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     
-    if (!persons.some(value => value.name.toLowerCase() === newName.toLowerCase())) {
+    if (!persons.some(person => samePerson(person.name, newName))) {
       const newPerson = {
-        name: newName,
-        number: newNumber
+        name: newName.trim(),
+        number: newNumber.trim()
       }
 
       personService

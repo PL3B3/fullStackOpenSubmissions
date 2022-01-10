@@ -41,9 +41,19 @@
       "id": 8
     },
     {
-      "name": "Senator armstrong",
-      "number": "100-1001-101",
+      "name": "Senator Armstrong    ",
+      "number": "607-952-9942",
       "id": 9
+    },
+    {
+      "name": "Senator Armstrong     ",
+      "number": "607-952-9942",
+      "id": 10
+    },
+    {
+      "name": "Senator Armstrong                               ",
+      "number": "607-952-9942",
+      "id": 11
     }
   ]
 }
