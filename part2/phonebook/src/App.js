@@ -43,17 +43,20 @@ const App = () => {
     setNewNumber('')
   }
 
-  const onNameFilterChange = (event) => {
-    setNameFilter(event.target.value)
-  }
-
-  const onNameChange = (event) => {
-    setNewName(event.target.value)
+  const removePerson = id => () => {
+    if (window.confirm(`DO YOU TRULY WISH TO PURGE USER #${id} FROM OUR RECORDS??`)) {
+      personService
+        .remove(id)
+        .then(() => setPersons(persons.filter(person => person.id !== id)))
+        .catch(err => console.err(`Person #${id} was not known to begin with!`))
+    }
   }
   
-  const onNumberChange = (event) => {
-    setNewNumber(event.target.value)
-  }
+  const onNameFilterChange = (event) => setNameFilter(event.target.value)
+
+  const onNameChange = (event) => setNewName(event.target.value)
+  
+  const onNumberChange = (event) => setNewNumber(event.target.value)
 
   const formInputs = [
     {
@@ -88,7 +91,7 @@ const App = () => {
       <h1>ROLODEX OF FAMILIAR PERSONS</h1>
       <Filter value={nameFilter} onChange={onNameFilterChange} />
       <TextForm title='Add Contact' inputs={formInputs} submit={formSubmit} />
-      <Contacts persons={personsToShow} />
+      <Contacts remove={removePerson} persons={personsToShow} />
     </div>
   );
 }
