@@ -27,16 +27,33 @@ const App = () => {
 
   useEffect(notesHook, [])
 
+  const toggleImportance = (id) => () => {
+    const url = `http://localhost:3001/notes/${id}`
+    const patchImportant = {important: !notes.find(n => n.id === id).important}
+    console.log(`patchImportant`, patchImportant)
+
+    axios
+      .patch(url, patchImportant)
+      .then(response => {
+        console.log(response.data)
+        setNotes(notes.map(note => note.id === id ? response.data : note))
+      })
+  }
+
   const addNote = (event) => {
     event.preventDefault()
     const newNote = {
-      id: notes.length + 1,
       content: newNoteText,
       date: new Date().toISOString(),
       important: Math.random() < 0.5
     }
-    setNotes(notes.concat(newNote))
-    setNewNoteText('')
+
+    axios
+      .post('http://localhost:3001/notes', newNote)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNoteText('')
+      })
   }
 
   const recordNote = (event) => {
@@ -56,7 +73,7 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <button onClick={toggleShowAll}>Show {showAll ? 'important' : 'all'} </button>
-      <Notes notes={notesToShow} />
+      <Notes toggleImportance={toggleImportance} notes={notesToShow} />
       <AddNote value={newNoteText} onChange={recordNote} onSubmit={addNote} />
     </div>
   )
