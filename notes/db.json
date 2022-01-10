@@ -1,24 +1,6 @@
 {
   "notes": [
     {
-      "id": 1,
-      "content": "HTML is easy",
-      "date": "2019-05-30T17:30:31.098Z",
-      "important": false
-    },
-    {
-      "id": 2,
-      "content": "Browser can execute only JavaScript",
-      "date": "2019-05-30T18:39:34.091Z",
-      "important": false
-    },
-    {
-      "id": 3,
-      "content": "GET and POST are the most important methods of HTTP protocol",
-      "date": "2019-05-30T19:20:14.298Z",
-      "important": true
-    },
-    {
       "content": "Wanzooka gaming",
       "date": "2022-01-09T23:18:06.142Z",
       "important": true,
@@ -27,14 +9,38 @@
     {
       "content": "Squaneepbeebo",
       "date": "2022-01-09T23:18:15.169Z",
-      "important": true,
+      "important": false,
       "id": 5
     },
     {
-      "content": "Amazing",
-      "date": "2022-01-09T23:18:24.175Z",
+      "content": "Premposterous!",
+      "date": "2022-01-10T02:29:08.558Z",
       "important": true,
-      "id": 6
+      "id": 10
+    },
+    {
+      "content": "I replaced one of the FOUNDING notes! I am a geneouis!",
+      "date": "2022-01-10T02:47:33.193Z",
+      "important": true,
+      "id": 11
+    },
+    {
+      "content": "I am Valorant Brimstone IRL",
+      "date": "2022-01-10T02:48:58.689Z",
+      "important": false,
+      "id": 12
+    },
+    {
+      "content": "If this code is erroneous, I do not know it",
+      "date": "2022-01-10T02:49:17.753Z",
+      "important": true,
+      "id": 13
+    },
+    {
+      "content": "Literally unpossible",
+      "date": "2022-01-10T02:51:36.638Z",
+      "important": false,
+      "id": 14
     }
   ]
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Notes from './components/Notes'
-import axios from 'axios'
-
+import noteService from './services/notes'
 
 const AddNote = ({ value, onChange, onSubmit }) => {
   return (
@@ -18,25 +17,25 @@ const App = () => {
   const [ showAll, setShowAll ] = useState(true)
 
   const notesHook = () => {
-    axios
-      .get('http://localhost:3001/notes')
-      .then((response) => {
-        setNotes(response.data)
-      })
+    noteService
+      .getAll()
+      .then(storedNotes => setNotes(storedNotes))
   }
 
   useEffect(notesHook, [])
 
   const toggleImportance = (id) => () => {
-    const url = `http://localhost:3001/notes/${id}`
-    const patchImportant = {important: !notes.find(n => n.id === id).important}
-    console.log(`patchImportant`, patchImportant)
+    const patchImportant = {
+      important: !notes.find(n => n.id === id).important
+    }
 
-    axios
-      .patch(url, patchImportant)
-      .then(response => {
-        console.log(response.data)
-        setNotes(notes.map(note => note.id === id ? response.data : note))
+    noteService
+      .update(id, patchImportant)
+      .then(patchedNote => {
+        setNotes(notes.map(note => note.id === id ? patchedNote : note))
+      })
+      .catch(err => {
+        console.error(`Announcement: Note #${id} has already been removed`)
       })
   }
 
@@ -48,13 +47,20 @@ const App = () => {
       important: Math.random() < 0.5
     }
 
-    axios
-      .post('http://localhost:3001/notes', newNote)
-      .then(response => {
-        setNotes(notes.concat(response.data))
+    noteService
+      .create(newNote)
+      .then(createdNote => {
+        setNotes(notes.concat(createdNote))
         setNewNoteText('')
       })
   }
+
+  const removeNote = (id) => () => {
+    noteService
+      .remove(id)
+      .then(response => setNotes(notes.filter(note => note.id !== id)))
+      .catch(err => console.error(err))
+  } 
 
   const recordNote = (event) => {
     // console.log('event.target.value :>> ', event.target.value);
@@ -73,7 +79,7 @@ const App = () => {
     <div>
       <h1>Notes</h1>
       <button onClick={toggleShowAll}>Show {showAll ? 'important' : 'all'} </button>
-      <Notes toggleImportance={toggleImportance} notes={notesToShow} />
+      <Notes removeNote={removeNote} toggleImportance={toggleImportance} notes={notesToShow} />
       <AddNote value={newNoteText} onChange={recordNote} onSubmit={addNote} />
     </div>
   )
