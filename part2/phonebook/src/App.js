@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import TextForm from './components/TextForm'
 import Contacts from './components/Contacts'
-import axios from 'axios'
 import personService from './services/persons'
 
 const App = () => {
@@ -22,13 +21,18 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     
-    if (!persons.some((value) => value.name === newName)) {      
+    if (!persons.some(value => value.name.toLowerCase() === newName.toLowerCase())) {
       const newPerson = {
         name: newName,
         number: newNumber
       }
 
-      setPersons(persons.concat(newPerson))
+      personService
+        .create(newPerson)
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson))
+        })
+        .catch(err => console.error(`${newName} already on server`))
     } else {
       alert(`FOOL! ${newName} is already among us`)
     }

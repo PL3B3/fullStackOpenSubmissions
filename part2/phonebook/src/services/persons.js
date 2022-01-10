@@ -7,15 +7,15 @@ const getAll = () => {
     .then(response => response.data)
 }
 
-const create = note => {
+const create = entry => {
   return axios
-    .post(baseUrl, note)
+    .post(baseUrl, entry)
     .then(response => response.data)
 }
 
-const update = (id, newData) => {
+const update = (id, updated) => {
   return axios
-    .put(`${baseUrl}/${id}`, newData)
+    .put(`${baseUrl}/${id}`, updated)
     .then(response => response.data)
 }
 
