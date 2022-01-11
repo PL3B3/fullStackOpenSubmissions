@@ -20,23 +20,48 @@ const App = () => {
 
   useEffect(personsHook, [])
 
-  const addPerson = (event) => {
-    event.preventDefault()
-    
-    if (!persons.some(person => samePerson(person.name, newName))) {
-      const newPerson = {
-        name: newName.trim(),
-        number: newNumber.trim()
-      }
+  const addPerson = () => {
+    const newPerson = {
+      name: newName.trim(),
+      number: newNumber.trim()
+    }
 
-      personService
-        .create(newPerson)
-        .then(createdPerson => {
-          setPersons(persons.concat(createdPerson))
-        })
-        .catch(err => console.error(`${newName} already on server`))
+    personService
+      .create(newPerson)
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson))
+      })
+      .catch(err => console.error(`${newName} already on server`))
+  }
+
+  const updatePerson = nameMatch => {
+    const matchUpdate = {
+      ...nameMatch,
+      number: newNumber.trim()
+    }
+
+    personService
+      .update(nameMatch.id, matchUpdate)
+      .then(serverPerson => {
+        setPersons(
+          persons.map(person => {
+            return person.id === serverPerson.id 
+              ? serverPerson
+              : person
+          })
+        )
+      })
+      .catch(err => console.error(err))
+  }
+  
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+
+    const nameMatch = persons.find(person => samePerson(person.name, newName));
+    if (nameMatch) { // found match
+      updatePerson(nameMatch)
     } else {
-      alert(`FOOL! ${newName} is already among us`)
+      addPerson()
     }
 
     setNewName('')
@@ -73,7 +98,7 @@ const App = () => {
 
   const formSubmit = {
     prompt: 'Add contact',
-    onSubmit: addPerson
+    onSubmit: handleFormSubmit
   }
   
   const personsToShow = nameFilter
